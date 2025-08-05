@@ -190,6 +190,7 @@
 - ✅ **NEW**: Real-time filtering with multiple column support
 - ✅ **NEW**: Keyboard navigation with visual selection
 - ✅ **NEW**: Date picker for date cells with popup interface
+- ✅ **NEW**: Horizontal scroll synchronization on mobile
 - ✅ Visual feedback during all operations
 - ✅ Sort indicators show current sort state
 - ✅ Smooth scrolling through 10,000+ rows
@@ -258,7 +259,15 @@ On mobile devices:
 - Use filter inputs to search
 - Tap date cells and use date picker
 - Scroll vertically to navigate data
+- **Scroll horizontally** - header and filters sync with data
 - Pinch to zoom for better visibility
+
+### Horizontal Scroll Synchronization:
+- **Scroll the data grid** horizontally on small screens
+- **Header and filter row** automatically scroll with the data
+- **Column alignment** is maintained during horizontal scroll
+- **No separate scrollbars** on header/filter row (clean interface)
+- **Smooth synchronization** across all components
 
 ## 🐛 Troubleshooting
 

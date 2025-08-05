@@ -18,6 +18,7 @@ const DataGrid = ({ data, columns, onReset }) => {
   const [datePickerPosition, setDatePickerPosition] = useState({ x: 0, y: 0 });
   const containerRef = useRef(null);
   const headerRef = useRef(null);
+  const filterRowRef = useRef(null);
   const inputRef = useRef(null);
   const datePickerRef = useRef(null);
 
@@ -85,6 +86,21 @@ const DataGrid = ({ data, columns, onReset }) => {
   // Performance: Handle scroll with throttling
   const handleScroll = useCallback((e) => {
     setScrollTop(e.target.scrollTop);
+  }, []);
+
+  // Handle horizontal scroll synchronization
+  const handleHorizontalScroll = useCallback((e) => {
+    const scrollLeft = e.target.scrollLeft;
+    
+    // Sync header scroll
+    if (headerRef.current) {
+      headerRef.current.scrollLeft = scrollLeft;
+    }
+    
+    // Sync filter row scroll
+    if (filterRowRef.current) {
+      filterRowRef.current.scrollLeft = scrollLeft;
+    }
   }, []);
 
   // Performance: Handle window resize
@@ -507,7 +523,7 @@ const DataGrid = ({ data, columns, onReset }) => {
       
       <div className="grid-wrapper">
         {/* Filter Row */}
-        <div className="filter-row">
+        <div className="filter-row" ref={filterRowRef} onScroll={handleHorizontalScroll}>
           {columnOrder.map((column) => {
             const width = columnWidths[column] || 150;
             return (
@@ -529,7 +545,7 @@ const DataGrid = ({ data, columns, onReset }) => {
         </div>
 
         {/* Fixed Header */}
-        <div className="grid-header-row" ref={headerRef}>
+        <div className="grid-header-row" ref={headerRef} onScroll={handleHorizontalScroll}>
           {columnOrder.map((column, index) => {
             const width = columnWidths[column] || 150;
             return (
@@ -568,8 +584,10 @@ const DataGrid = ({ data, columns, onReset }) => {
         <div
           ref={containerRef}
           className="grid-body"
-          onScroll={handleScroll}
-          style={{ height: `calc(100vh - 280px)` }}
+          onScroll={(e) => {
+            handleScroll(e);
+            handleHorizontalScroll(e);
+          }}
         >
           <div style={{ height: `${totalHeight}px`, position: 'relative' }}>
             <div
